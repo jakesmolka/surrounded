@@ -1,0 +1,3 @@
+[submodule "blog/src/themes/hugo-classic"]
+	path = blog/src/themes/hugo-classic
+	url = https://github.com/goodroot/hugo-classic

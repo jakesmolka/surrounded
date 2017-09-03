@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  proxy:
+    image: traefik
+    command: --web --docker --docker.domain=surrounded.space --docker.exposedbydefault=false --logLevel=DEBUG
+    restart: always
+    networks:
+      - webgateway
+    ports:
+      - "80:80"
+      - "433:433"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/traefik.toml
+      - ./acme:/etc/traefik/acme
+    labels:
+      - "traefik.backend=proxy"
+      - "traefik.frontend.rule=Host:traefik.surrounded.space"
+      - "traefik.port=8080"
+      - "traefik.enable=true"  
+
+networks:
+  webgateway:
+    driver: bridge

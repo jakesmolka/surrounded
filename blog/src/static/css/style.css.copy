@@ -1,0 +1,9 @@
+/* color scheme https://coolors.co/4b4237-d5a021-ede7d9-a49694-736b60 */
+
+header {
+    background: #4B4237;
+}
+
+header a {
+    color: #EDE7D9;
+}

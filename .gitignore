@@ -1,0 +1,10 @@
+# ignore key files storage
+traefik/acme/acme.json
+
+# ignore hugo output files. will get generated anyway
+blog/output/*
+
+# ignore random generated root pw for mysql
+piwik/mysql-root.pw
+piwik/config/*
+piwik/mysql/*

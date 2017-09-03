@@ -1,0 +1,37 @@
+version: '2'
+services:
+    hugo:
+      image: jojomi/hugo:latest
+      volumes:
+        - ./src/:/src
+        - ./output/:/output
+      environment:
+        - HUGO_REFRESH_TIME=3600
+        - HUGO_THEME=hugo-classic
+        - HUGO_BASEURL=http://blog.surrounded.space/
+      restart: always
+
+    hugo-caddy:
+      image: zzrot/alpine-caddy
+      restart: always
+      ports:
+        - 2015:2015
+        #- 443:443
+      volumes:
+        - ./Caddyfile:/etc/Caddyfile
+        - ./output:/var/www/html
+        - ./.caddy:/root/.caddy
+      networks: 
+        - "traefik_webgateway"
+      labels:
+        - "traefik.backend=hugo-caddy"
+        - "traefik.frontend.rule=Host:blog.surrounded.space"
+        - "traefik.protocol=http"
+        - "traefik.port=2015"
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik_webgateway"
+
+networks:
+    traefik_webgateway:
+      external:
+        name: traefik_webgateway

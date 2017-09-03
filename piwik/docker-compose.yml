@@ -1,0 +1,62 @@
+# source: https://github.com/indiehosters/piwik
+version: '2'
+
+services:
+    db:
+      image: mysql
+      volumes:
+        - ./mysql/runtime:/var/lib/mysql
+      environment:
+        - MYSQL_RANDOM_ROOT_PASSWORD=true
+      #networks:
+      #  - back
+ 
+    piwik:
+      image: piwik:fpm
+      links:
+        - db
+      ports:
+        - 9000:9000
+      volumes:
+        - ./config:/var/www/html/config
+      networks:
+        #- back
+        - traefik_webgateway
+      labels:
+        - "traefik.backend=piwik"
+        - "traefik.frontend.rule=Host:piwik.surrounded.space"
+        - "traefik.protocol=http"
+        - "traefik.port=9000"
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik_webgateway"
+
+
+#    web:
+#      image: nginx
+#      volumes:
+#        - ./nginx:/etc/nginx:ro
+#      links:
+#        - app
+#      volumes_from:
+#        - app
+#      environment:
+#        - VIRTUAL_HOST=piwik.surrounded.space
+#      ports:
+#        - 5678:80
+#      networks:
+#        - back
+#        - traefik_webgateway
+#      labels:
+#        - "traefik.backend=web"
+#        - "traefik.frontend.rule=Host:piwik.surrounded.space"
+#        - "traefik.protocol=http"
+#        - "traefik.port=5678"
+#        - "traefik.enable=true"
+#        - "traefik.docker.network=traefik_webgateway"
+
+networks:
+  traefik_webgateway:
+    external: 
+      name: traefik_webgateway
+#  back:
+#    driver: bridge
