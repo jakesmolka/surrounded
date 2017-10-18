@@ -9,3 +9,6 @@ blog/output/*
 piwik/mysql-root.pw
 piwik/config/*
 piwik/mysql/*
+
+# matrix related
+matrix/synapse/*

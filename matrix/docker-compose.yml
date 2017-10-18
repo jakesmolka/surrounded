@@ -1,0 +1,50 @@
+# CREDIT: jonnev.se/matrix-homeserver-with-docker/
+# Check site for required steps!
+version: "2"
+services:
+  matrix-postgres:
+    image: postgres:9.6.4
+    restart: always
+    
+    # I like to be able to use psql on the host to connect to the database 
+    # for maintenance. If you already have a postgres running you should remove 
+    # the 'ports' section and uncomment 'expose'
+    # expose:
+    # - 5432
+    
+    # Adding 127.0.0.1 ensures the port isn't exposed ON the host
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+     - /opt/matrix/pgdata:/var/lib/postgresql/data
+
+    # These will be used in homeserver.yaml later on
+    environment:
+     - POSTGRES_PASSWORD=PASSWORD
+     - POSTGRES_USER=synapse
+
+  synapse:
+    image: silviof/docker-matrix
+    # Exposing 8008 (no TLS) on localhost means we can reverse proxy with nginx
+    # 8448 is for federation and should be exposed on host
+    # 3478 is for TURN (voip calls)
+    ports:
+     - "127.0.0.1:8008:8008"
+     - "8448:8448"
+     - "3478:3478"
+    volumes:
+     - ./synapse:/data
+    labels:
+        - "traefik.backend=synapse"
+        - "traefik.frontend.rule=Host:mtrx.surrounded.space"
+          #- "traefik.protocol=https"
+        - "traefik.port=8008"
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik_webgateway"
+
+
+# Our docker network!
+networks:
+  default:
+    external:
+      name: traefik_webgateway
