@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
     hugo:
       image: jojomi/hugo:latest
@@ -22,11 +22,11 @@ services:
         - ./output:/var/www/html
         - ./.caddy:/root/.caddy
       networks: 
-        - "traefik_webgateway"
+        - traefik_webgateway
       labels:
         - "traefik.backend=hugo-caddy"
         - "traefik.frontend.rule=Host:blog.surrounded.space"
-        - "traefik.protocol=http"
+          #- "traefik.protocol=http"
         - "traefik.port=2015"
         - "traefik.enable=true"
         - "traefik.docker.network=traefik_webgateway"
