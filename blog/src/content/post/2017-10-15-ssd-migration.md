@@ -14,7 +14,7 @@ slug: ssd-migration
 # Migration to SSD and reconfig of filesystem setup
 I was finally about to migrate to a SSD on my laptop when I started to think about switching to Btrfs and getting rid of LVM while I’m at it. 
 To achieve that I tried different things but came down to the following. At this point I also had the SSD installed in my laptop already and 
-the old HDD plugable with SATA-to-USB adapter.
+the old HDD pluggable with SATA-to-USB adapter.
 
 Basic idea: Via live usb, create /boot and LUKS container (with /) on SSD. Format / and /boot to Btrfs. Migrate data with rsync. Do the usual 
 steps at the end of an arch installation (fstab, bootloader, mkinitcpio etc).
