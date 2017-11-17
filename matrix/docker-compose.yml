@@ -20,7 +20,7 @@ services:
 
     # These will be used in homeserver.yaml later on
     environment:
-     - POSTGRES_PASSWORD=PASSWORD
+     - POSTGRES_PASSWORD=t9hz73vgt51798vt435
      - POSTGRES_USER=synapse
 
   synapse:
@@ -35,12 +35,12 @@ services:
     volumes:
      - ./synapse:/data
     labels:
-        - "traefik.backend=synapse"
-        - "traefik.frontend.rule=Host:mtrx.surrounded.space"
-          #- "traefik.protocol=https"
-        - "traefik.port=8008"
-        - "traefik.enable=true"
-        - "traefik.docker.network=traefik_webgateway"
+        traefik.backend: "synapse"
+        traefik.frontend.rule: "Host:mtrx.surrounded.space"
+        #- "traefik.protocol=https"
+        traefik.port: "8008"
+        traefik.enable: "true"
+        traefik.docker.network: "traefik_webgateway"
 
 
 # Our docker network!
