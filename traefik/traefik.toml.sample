@@ -127,3 +127,6 @@ OnHostRule = true
 #[[acme.domains]]
 #   main = "surrounded.space"
 #   sans = ["blog.surrounded.space"]
+
+[acme.httpChallenge]
+entryPoint = "http"
