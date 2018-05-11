@@ -240,4 +240,8 @@ Thanks:
 - https://blog.andrewkeech.com/posts/170719_borg.html
 - https://borgbackup.readthedocs.io/en/stable/quickstart.html#automating-backups (and the doc in general)
 - https://wiki.hetzner.de/index.php/BorgBackup
+<<<<<<< HEAD
 - https://wiki.archlinux.org/index.php/Systemd (and subpages)
+=======
+- https://wiki.archlinux.org/index.php/Systemd (and subpages)
+>>>>>>> new blog post
