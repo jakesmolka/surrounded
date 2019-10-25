@@ -12,7 +12,7 @@ services:
       restart: always
 
     hugo-caddy:
-      image: zzrot/alpine-caddy
+      image: yobasystems/alpine-caddy
       restart: always
       ports:
         - 2015:2015
