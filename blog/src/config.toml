@@ -3,7 +3,6 @@ languageCode = "en-us"
 title = "surrounded.space Blog"
 theme = "hugo-classic"
 googleAnalytics = ""
-disqusShortname = "blog-surrounded-space"
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 preserveTaxonomyNames = true
 footnotereturnlinkcontents = "↩"
