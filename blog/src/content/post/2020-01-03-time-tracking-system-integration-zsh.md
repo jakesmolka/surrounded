@@ -193,4 +193,4 @@ Disadvantages / Cons:
 
 Altogether my prompt and its *Watson* integration looks like this. First tracking is off, then it's running and stopped again:
 
-![](blog-watson-better.png)
+![](/img/2020-01-03-blog-watson-better.png)
