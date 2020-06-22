@@ -1,5 +1,5 @@
 # ignore key files storage
-traefik/acme/acme.json
+traefik/acme/*
 traefik/traefik.toml
 
 # ignore hugo output files. will get generated anyway

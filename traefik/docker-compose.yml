@@ -2,7 +2,7 @@ version: '3'
 
 services:
   proxy:
-    image: traefik
+    image: traefik:1.7-alpine
     command: --web --docker --docker.domain=surrounded.space --docker.exposedbydefault=false --logLevel=DEBUG
     restart: always
     networks:
@@ -24,3 +24,4 @@ services:
 networks:
   webgateway:
     driver: bridge
+
