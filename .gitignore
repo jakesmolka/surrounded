@@ -12,3 +12,7 @@ piwik/mysql/*
 
 # matrix related
 matrix/synapse/*
+
+# wordpress
+wordpress/wp-app
+wordpress/config
