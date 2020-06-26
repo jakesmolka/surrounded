@@ -16,3 +16,7 @@ matrix/synapse/*
 # wordpress
 wordpress/wp-app
 wordpress/config
+
+# mistserver
+mistserver/config
+mistserver/media

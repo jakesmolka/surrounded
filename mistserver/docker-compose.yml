@@ -1,0 +1,42 @@
+version: '3.3'
+
+services:
+  mist:
+    image: r0gger/mistserver
+    ports:
+      - "554:554"
+      - "1935:1935"
+      - "4242:4242"
+      - "8088:8080"
+    restart: always
+    networks:
+      - traefik_webgateway
+    volumes:
+      - ./config:/config
+      - ./media:/media
+    tmpfs:
+      - /dev/shm # To fix overflowing buffer. Now with "unlimited" size.
+    labels:
+         - "traefik.enable=true"
+         - "traefik.docker.network=traefik_webgateway"
+         # RTSP
+         - "traefik.rtmp.backend=mistrtsp"
+         - "traefik.rtmp.frontend.rule=Host:mistrtsp.surrounded.space"
+         - "traefik.rtmp.port=554"
+         # RTMP
+         - "traefik.rtmp.backend=mistrtmp"
+         - "traefik.rtmp.frontend.rule=Host:mistrtmp.surrounded.space"
+         - "traefik.rtmp.port=1935"
+         # WEB
+         - "traefik.web.backend=mistweb"
+         - "traefik.web.frontend.rule=Host:mistweb.surrounded.space"
+         - "traefik.web.port=4242"
+         # HTTP
+         - "traefik.http.backend=misthttp"
+         - "traefik.http.frontend.rule=Host:mist.surrounded.space"
+         - "traefik.http.port=8080"
+
+networks:
+    traefik_webgateway:
+      external:
+        name: traefik_webgateway
