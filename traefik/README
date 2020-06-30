@@ -1,4 +1,2 @@
-1. copy `cp traefik.toml.sample traefik.toml`
-2. edit email in config file.
-3. `mkdir acme && touch acme/acme.json && chmod 600 acme/acme.json`
-4. `docker-compose up -d` 
+1. Add valid email in docker-compose.yml 
+2. `docker-compose up -d` 

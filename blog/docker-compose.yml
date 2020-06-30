@@ -12,6 +12,7 @@ services:
       restart: always
 
     hugo-caddy:
+      container_name: "hugo-caddy"
       image: yobasystems/alpine-caddy
       restart: always
       ports:
@@ -24,12 +25,11 @@ services:
       networks: 
         - traefik_webgateway
       labels:
-        - "traefik.backend=hugo-caddy"
-        - "traefik.frontend.rule=Host:blog.surrounded.space"
-          #- "traefik.protocol=http"
-        - "traefik.port=2015"
         - "traefik.enable=true"
-        - "traefik.docker.network=traefik_webgateway"
+        - "traefik.http.routers.hugo-caddy.entrypoints=websecure"
+        - "traefik.http.routers.hugo-caddy.rule=Host(`blog.surrounded.space`)"
+        - "traefik.http.routers.hugo-caddy.tls.certresolver=default"
+        - "traefik.http.services.hugo-caddy.loadbalancer.server.port=2015"        
 
 networks:
     traefik_webgateway:

@@ -2,6 +2,7 @@ version: '2'
 
 services:
   rocketchat:
+    container_name: "rocketchat"
     image: rocketchat/rocket.chat:3.3.0
     restart: unless-stopped
     command: >
@@ -24,13 +25,11 @@ services:
     ports:
       - "3000:3000"
     labels:
-      #- "traefik.enable=true"
-      #- "traefik.http.routers.rocketchat.rule=Host(`${ROCKETCHAT_HOST}`)"
-      - "traefik.http.routers.rocketchat.entrypoints=web"
-      - "traefik.backend=rocketchat"
-      - "traefik.frontend.rule=Host:rocketchat.surrounded.space"
-      - "traefik.port=3000"
       - "traefik.enable=true"
+      - "traefik.http.routers.rocketchat.entrypoints=websecure"
+      - "traefik.http.routers.rocketchat.rule=Host(`rocketchat.surrounded.space`)"
+      - "traefik.http.routers.rocketchat.tls.certresolver=default"
+      - "traefik.http.services.rocketchat.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik_webgateway"
     depends_on:
       - mongo

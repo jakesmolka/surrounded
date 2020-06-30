@@ -20,21 +20,32 @@ services:
          - "traefik.enable=true"
          - "traefik.docker.network=traefik_webgateway"
          # RTSP
-         - "traefik.rtmp.backend=mistrtsp"
-         - "traefik.rtmp.frontend.rule=Host:mistrtsp.surrounded.space"
-         - "traefik.rtmp.port=554"
+         - "traefik.http.routers.mistrtsp.entrypoints=websecure"
+         - "traefik.http.routers.mistrtsp.rule=Host(`mistrtsp.surrounded.space`)"
+         - "traefik.http.routers.mistrtsp.tls.certresolver=default"
+         - "traefik.http.routers.mistrtsp.service=mistrtsp-service"
+         - "traefik.http.services.mistrtsp-service.loadbalancer.server.port=554"
+
          # RTMP
-         - "traefik.rtmp.backend=mistrtmp"
-         - "traefik.rtmp.frontend.rule=Host:mistrtmp.surrounded.space"
-         - "traefik.rtmp.port=1935"
+         - "traefik.http.routers.mistrtmp.entrypoints=websecure"
+         - "traefik.http.routers.mistrtmp.rule=Host(`mistrtmp.surrounded.space`)"
+         - "traefik.http.routers.mistrtmp.tls.certresolver=default"
+         - "traefik.http.routers.mistrtmp.service=mistrtmp-service"
+         - "traefik.http.services.mistrtmp-service.loadbalancer.server.port=1935"
+
          # WEB
-         - "traefik.web.backend=mistweb"
-         - "traefik.web.frontend.rule=Host:mistweb.surrounded.space"
-         - "traefik.web.port=4242"
+         - "traefik.http.routers.mistweb.entrypoints=websecure"
+         - "traefik.http.routers.mistweb.rule=Host(`mistweb.surrounded.space`)"
+         - "traefik.http.routers.mistweb.tls.certresolver=default"
+         - "traefik.http.routers.mistweb.service=mistweb-service"
+         - "traefik.http.services.mistweb-service.loadbalancer.server.port=4242"
+
          # HTTP
-         - "traefik.http.backend=misthttp"
-         - "traefik.http.frontend.rule=Host:mist.surrounded.space"
-         - "traefik.http.port=8080"
+         - "traefik.http.routers.mist.entrypoints=websecure"
+         - "traefik.http.routers.mist.rule=Host(`mist.surrounded.space`)"
+         - "traefik.http.routers.mist.tls.certresolver=default"
+         - "traefik.http.routers.mist.service=mist-service"
+         - "traefik.http.services.mist-service.loadbalancer.server.port=8080"
 
 networks:
     traefik_webgateway:
