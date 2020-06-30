@@ -20,3 +20,6 @@ wordpress/config
 # mistserver
 mistserver/config
 mistserver/media
+
+# rocketchat
+rocketchat/data

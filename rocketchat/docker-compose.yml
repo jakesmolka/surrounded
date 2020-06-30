@@ -1,0 +1,72 @@
+version: '2'
+
+services:
+  rocketchat:
+    image: rocketchat/rocket.chat:3.3.0
+    restart: unless-stopped
+    command: >
+      bash -c
+        "for i in `seq 1 30`; do
+          INSTANCE_IP=$$(hostname -i) node main.js &&
+          s=$$? && break || s=$$?;
+          echo \"Tried $$i times. Waiting 5 secs...\";
+          sleep 5;
+        done; (exit $$s)"
+    mem_limit: 4G
+    volumes:
+     - ./data/uploads:/app/uploads
+     - /tmp:/tmp
+    environment:
+     - PORT=3000
+     - ROOT_URL=https://rocketchat.surrounded.space
+     - MONGO_URL=mongodb://mongo:27017/rocketchat
+     - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+    ports:
+      - "3000:3000"
+    labels:
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.rocketchat.rule=Host(`${ROCKETCHAT_HOST}`)"
+      - "traefik.http.routers.rocketchat.entrypoints=web"
+      - "traefik.backend=rocketchat"
+      - "traefik.frontend.rule=Host:rocketchat.surrounded.space"
+      - "traefik.port=3000"
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_webgateway"
+    depends_on:
+      - mongo
+    networks:
+      - traefik_webgateway
+      - default
+
+  mongo:
+    image: mongo:4.0
+    restart: unless-stopped
+    command: mongod --smallfiles --oplogSize 128 --replSet rs0
+    volumes:
+      - ./data/db:/data/db
+      - ./data/backups:/dump
+    networks:
+      - default
+
+  mongo-init-replica:
+    image: mongo:4.0
+    command: >
+      bash -c
+        "for i in `seq 1 30`; do
+          mongo mongo/rocketchat --eval \"
+            rs.initiate({
+              _id: 'rs0',
+              members: [ { _id: 0, host: 'localhost:27017' } ]})\" &&
+          s=$$? && break || s=$$?;
+          echo \"Tried $$i times. Waiting 5 secs...\";
+          sleep 5;
+        done; (exit $$s)"
+    depends_on:
+      - mongo
+    networks:
+      - default
+
+networks:
+    traefik_webgateway:
+      external:
+        name: traefik_webgateway
