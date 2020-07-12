@@ -8,7 +8,7 @@ services:
       - "--log.level=DEBUG"
       # traefik-ception - or dashboard config
       #- "--api.dashboard=true"
-      - "--api.insecure=true"
+      #- "--api.insecure=true"
       # docker provider config
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
@@ -19,8 +19,15 @@ services:
       - "--certificatesresolvers.default.acme.httpchallenge=true"
       - "--certificatesresolvers.default.acme.httpchallenge.entrypoint=web"
         #- "--certificatesresolvers.default.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.default.acme.email=email@email.com" # ADD EMAIL!
+      - "--certificatesresolvers.default.acme.email=jake.smolka@gmail.com" # ADD EMAIL!
       - "--certificatesresolvers.default.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.websecure.http.tls.certResolver=default"
+      # HTTPS HLS config
+      - "--entrypoints.hls.address=:8080"
+      - "--entrypoints.hls.http.tls.certResolver=default"
+
+      # RTMP config
+      - "--entrypoints.rtmp.address=:1935"
     restart: always
     networks:
       - webgateway
@@ -28,6 +35,7 @@ services:
       - "80:80"
       - "443:443"
       - "8080:8080"
+      - "1935:1935"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./letsencrypt:/letsencrypt"

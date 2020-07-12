@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  restreamer:
+    image: datarhei/restreamer
+    container_name: restreamer
+    restart: always
+    ports:
+      - 1936:1935
+      - 8088:8080
+    networks:
+      - traefik_webgateway
+    volumes:
+      - "./db:/restreamer/db"
+    environment:
+      - RS_USERNAME=admin
+      - RS_PASSWORD=datarhei
+      - RS_LOGLEVEL=4
+      - RS_DEBUG=true
+      - RS_TIMEZONE=Europe/Berlin
+      - RS_SNAPSHOT_INTERVAL=1m
+      - RS_TOKEN=supersecrettoken
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_webgateway"
+         # RTMP
+      - "traefik.tcp.routers.restreamerrtmp.entrypoints=rtmp"
+      - "traefik.tcp.routers.restreamerrtmp.rule=HostSNI(`*`)" # Set the SNI
+      - "traefik.tcp.routers.restreamerrtmp.service=restreamerrtmp-service"
+      - "traefik.tcp.services.restreamerrtmp-service.loadbalancer.server.port=1935"
+
+         # WEB
+         # - "traefik.http.routers.mistweb.entrypoints=web"
+         # - "traefik.http.routers.mistweb.rule=Host(`stream.localhost`)"
+         # - "traefik.http.routers.mistweb.service=mistweb-service"
+         # - "traefik.http.services.mistweb-service.loadbalancer.server.port=4242"
+
+         # HTTP HLS
+      - "traefik.http.routers.restreamer.entrypoints=hls"
+      - "traefik.http.routers.restreamer.rule=Host(`stream.surrounded.space`)"
+      - "traefik.http.routers.restreamer.service=restreamer-service"
+      - "traefik.http.services.restreamer-service.loadbalancer.server.port=8080"
+
+networks:
+    traefik_webgateway:
+      external:
+        name: traefik_webgateway

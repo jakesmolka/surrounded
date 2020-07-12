@@ -23,3 +23,6 @@ mistserver/media
 
 # rocketchat
 rocketchat/data
+
+# restreamer
+restreamer/db
