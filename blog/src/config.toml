@@ -7,10 +7,6 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 preserveTaxonomyNames = true
 footnotereturnlinkcontents = "↩"
 
-#[params]
-#    piwikSiteID = ""
-#    piwikURL = ""
-
 [permalinks]
     post = "/post/:year/:month/:day/:slug/"
 
@@ -32,4 +28,4 @@ footnotereturnlinkcontents = "↩"
 
 [params]
     description = "A simple, minimal blog for those who love text."
-    footer = "Jake | [Github](https://github.com/jakesmolka) | [Twitter](https://twitter.com/jakesmolka)"
+    footer = "Jake | [Github](https://github.com/jakesmolka) | [Twitter](https://twitter.com/jakesmolka) | [Mail](mailto:jake.smolka ÄT mailbox DÖT org)"
