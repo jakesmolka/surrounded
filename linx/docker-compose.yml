@@ -1,0 +1,29 @@
+version: '2.2'
+
+services:
+    linx-server:
+      container_name: linx-server
+      image: andreimarcu/linx-server
+      command: -config /data/linx-server.conf
+      volumes:
+        - ./files:/data/files
+        - ./meta:/data/meta
+        - ./linx-server.conf:/data/linx-server.conf
+        - ./authfile:/data/authfile
+          #network_mode: bridge
+      ports:
+        - "9547:8080"
+      restart: unless-stopped
+      networks:
+        - traefik_webgateway
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.linx-server.entrypoints=websecure"
+        - "traefik.http.routers.linx-server.rule=Host(`linx.surrounded.space`)"
+        - "traefik.http.routers.linx-server.tls.certresolver=default"
+        - "traefik.http.services.linx-server.loadbalancer.server.port=8080"
+
+networks:
+    traefik_webgateway:
+      external:
+        name: traefik_webgateway
